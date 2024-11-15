@@ -49,3 +49,6 @@ results %>%
   ) +
   theme_minimal(base_size = 14)
 ```
+
+The plot above shows that as the group size increases, the probability of that at least two people in the group will share a birthday also increase. Around group size of 23,the probability exceeds 0.5(50%), and in group of 50 people, the probability is very close to 1(100%). Meaning
+
