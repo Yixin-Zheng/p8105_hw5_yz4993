@@ -8,12 +8,31 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(rvest)
 ```
 
 #Problem 1
-```{r create function}
+```{r p1_create function}
 simulate_birthday <- function(n) {
   birthdays <- sample(1:365, n, replace = TRUE) # assign random birthdays
   any(duplicated(birthdays)) # check for duplicate birthdays
   }
+```
+
+```{r p1_parameters}
+set.seed(42)
+sizes <- 2:50
+num_of_times <- 10000
+```
+
+```{r p1_simulation}
+results <- tibble(
+  group_size = sizes,
+  probability = map_dbl(sizes, function(n) {
+    mean(replicate(num_of_times, simulate_birthday(n)))
+  })
+)
+
+# another method:
+# sim_results_df <- expand_grid(group_size = 2:50, iter = 1:10000) |> mutate(has_shared_birthday = map_lgl(group_size, simulate_birthday)) |> group_by(group_size) |> summarize(probability = mean(has_shared_birthday), .groups = "drop")
 ```
