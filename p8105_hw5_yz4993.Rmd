@@ -63,3 +63,25 @@ num_of_times_2 <- 5000
 mu_values <- c(1, 2, 3, 4, 5, 6)
 ```
 
+```{r p2_function}
+t_test <- function(mu) {
+  x <- rnorm(n, mean = mu, sd = sigma)
+  t_test_result <- t.test(x, mu = 0)
+  tidy(t_test_result) %>% 
+    select(estimate, p.value)
+}
+```
+
+```{r p2_mu0 simulation}
+set.seed(42)
+mu0_results <- tibble(
+  iter = 1:num_of_times_2,
+  test_result = map(iter, ~ t_test(mu = 0))
+  ) %>%
+  unnest(test_result)
+```
+
+```{r p2_mu0 power}
+mu0_power <- mean(mu0_results$p.value < 0.05)
+mu0_power
+```
