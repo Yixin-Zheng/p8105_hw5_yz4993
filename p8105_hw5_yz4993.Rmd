@@ -9,6 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rvest)
+library(broom)
 ```
 
 #Problem 1
@@ -22,23 +23,25 @@ simulate_birthday <- function(n) {
 ```{r p1_parameters}
 set.seed(42)
 sizes <- 2:50
-num_of_times <- 10000
+num_of_times_1 <- 10000
 ```
 
 ```{r p1_simulation}
-results <- tibble(
+p1_results <- tibble(
   group_size = sizes,
-  probability = map_dbl(sizes, function(n) {
-    mean(replicate(num_of_times, simulate_birthday(n)))
-  })
-)
+  probability = map_dbl(sizes, 
+                        function(n) {
+                          mean(replicate(num_of_times_1,
+                                         simulate_birthday(n)))
+                          })
+  )
 
 # another method:
 # sim_results_df <- expand_grid(group_size = 2:50, iter = 1:10000) |> mutate(has_shared_birthday = map_lgl(group_size, simulate_birthday)) |> group_by(group_size) |> summarize(probability = mean(has_shared_birthday), .groups = "drop")
 ```
 
 ```{r p1_plot}
-results %>%
+p1_results %>%
   ggplot(aes(x = group_size, y = probability)) +
   geom_line() +
   geom_point() +
@@ -46,9 +49,17 @@ results %>%
     title = "Probability of Shared Birthday in a Group",
     x = "Number of People in Group",
     y = "Probability"
-  ) +
+    ) +
   theme_minimal(base_size = 14)
 ```
 
 The plot above shows that as the group size increases, the probability of that at least two people in the group will share a birthday also increase. Around group size of 23,the probability exceeds 0.5(50%), and in group of 50 people, the probability is very close to 1(100%). Meaning
+
+# Problem 2
+```{r p2_parameter}
+n <- 30
+sigma <- 5
+num_of_times_2 <- 5000
+mu_values <- c(1, 2, 3, 4, 5, 6)
+```
 
