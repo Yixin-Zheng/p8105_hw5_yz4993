@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rvest)
 library(broom)
+library(readr)
 ```
 
 #Problem 1
@@ -166,3 +167,9 @@ estimate_plot
 
 The sample average of hat(mu) across tests for which the null is rejected is not approximately equal to the true value of mu, especially at lower values of mu but it becomes closer as mu increases.
 Because when we are only considering hat(mu) in samples for which the null was rejected, it will be more likely to include tests with estimates of larger effect because that would pass the alpha = 0.05, and thus would tend to results in a slight overestimate in smaller values of the true mean, but the we will have better approximation at larger values.
+
+# Problem 3
+```{r p3_load data}
+file_path <- "~/Desktop/Data Science/HW/HW5/p8105_hw5_yz4993/data/homicide-data.csv"
+homicide_data <- read_csv(file_path)
+```
