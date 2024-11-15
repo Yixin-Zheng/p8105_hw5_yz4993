@@ -113,3 +113,18 @@ power_results <- bind_rows(
 power_results
 ```
 
+```{r p2_power plot}
+power_plot <- power_results %>%
+  ggplot(aes(x = mu, y = power)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Power of the Test vs. True Value of mu",
+    x = "True Value of mu",
+    y = "Power"
+  ) +
+  theme_minimal(base_size = 14)
+power_plot
+```
+The plot above shows a positive association between effect size and the power of the test. As the true value of mu increases, the power of the test also increases.
+
