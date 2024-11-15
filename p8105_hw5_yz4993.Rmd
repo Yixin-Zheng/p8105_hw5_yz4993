@@ -188,3 +188,39 @@ homicide_summary <- homicide_data %>%
     .groups = "drop"
   )
 ```
+
+```{r p3_baltimore prop.test}
+balMD_data <- homicide_summary %>%
+  filter(city_state == "Baltimore, MD")
+
+balMD_test <- prop.test(
+  x = balMD_data$unsolved_homicides,
+  n = balMD_data$total_homicides
+)
+
+balMD_summary <- broom::tidy(balMD_test) %>%
+  select(estimate, conf.low, conf.high)
+balMD_summary
+```
+
+```{r p3_each city}
+prop_test <- function(unsolved, total) {
+  if (total < 10) { 
+    prop_test_result <- binom.test(x = unsolved, n = total)
+    broom::tidy(prop_test_result) %>%
+      select(estimate, conf.low, conf.high)
+  } else {
+    prop_test_result <- prop.test(x = unsolved, n = total)
+    broom::tidy(prop_test_result) %>%
+      select(estimate, conf.low, conf.high)
+  }
+}
+
+city_estimates <- homicide_summary %>%
+  mutate(
+    test_results = map2(unsolved_homicides, total_homicides, prop_test)
+  ) %>%
+  unnest(test_results)
+
+city_estimates
+```
