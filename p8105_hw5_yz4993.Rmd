@@ -36,3 +36,16 @@ results <- tibble(
 # another method:
 # sim_results_df <- expand_grid(group_size = 2:50, iter = 1:10000) |> mutate(has_shared_birthday = map_lgl(group_size, simulate_birthday)) |> group_by(group_size) |> summarize(probability = mean(has_shared_birthday), .groups = "drop")
 ```
+
+```{r p1_plot}
+results %>%
+  ggplot(aes(x = group_size, y = probability)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Probability of Shared Birthday in a Group",
+    x = "Number of People in Group",
+    y = "Probability"
+  ) +
+  theme_minimal(base_size = 14)
+```
