@@ -85,3 +85,31 @@ mu0_results <- tibble(
 mu0_power <- mean(mu0_results$p.value < 0.05)
 mu0_power
 ```
+
+
+```{r p2_mu_values simulation}
+mu_value_results <- expand_grid(
+  mu = mu_values,
+  iter = 1:num_of_times_2
+  ) %>%
+  mutate(
+    test_result = map(mu, ~ t_test(.x))
+    ) %>%
+  unnest(test_result)
+```
+
+```{r p2_mu_values power}
+mu_values_power <- mu_value_results %>%
+  group_by(mu) %>%
+  summarize(power = mean(p.value < 0.05), 
+            .groups = "drop")
+mu_values_power
+
+# combine mu = 0 result with other power results
+power_results <- bind_rows(
+  tibble(mu = 0, power = mu0_power),
+  mu_values_power
+)
+power_results
+```
+
