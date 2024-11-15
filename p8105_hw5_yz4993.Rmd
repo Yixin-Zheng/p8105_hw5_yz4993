@@ -11,6 +11,7 @@ library(tidyverse)
 library(rvest)
 library(broom)
 library(readr)
+library(purrr)
 ```
 
 #Problem 1
@@ -172,4 +173,18 @@ Because when we are only considering hat(mu) in samples for which the null was r
 ```{r p3_load data}
 file_path <- "~/Desktop/Data Science/HW/HW5/p8105_hw5_yz4993/data/homicide-data.csv"
 homicide_data <- read_csv(file_path)
+```
+
+The Washington Post homicide dataset has 52,179 records with 12 variables, showcasing homicides in 50 U.S. cities. This dataset includes victim demographics such as race, age, sex and case status + information such as uid and reported date, and location information such as latitude, longitude, city and state. 
+
+```{r p3_create variable}
+homicide_summary <- homicide_data %>%
+  mutate(city_state = str_c(city, ", ", state)) %>%
+  group_by(city_state) %>%
+  summarize(
+    total_homicides = n(),
+    unsolved_homicides = sum(disposition %in% 
+                               c("Closed without arrest", "Open/No arrest")),
+    .groups = "drop"
+  )
 ```
