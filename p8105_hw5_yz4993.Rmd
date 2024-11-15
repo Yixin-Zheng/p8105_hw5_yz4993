@@ -224,3 +224,19 @@ city_estimates <- homicide_summary %>%
 
 city_estimates
 ```
+
+```{r p3_plot}
+city_estimates %>%
+  arrange(estimate) %>%
+  mutate(city_state = factor(city_state, levels = unique(city_state))) %>%
+  ggplot(aes(x = city_state, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) +
+  coord_flip() +
+  labs(
+    title = "Proportion of Unsolved Homicides by City",
+    x = "City",
+    y = "Proportion of Unsolved Homicides"
+  ) +
+  theme_minimal()
+```
